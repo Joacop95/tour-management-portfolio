@@ -1,0 +1,3 @@
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import type { GuideImportRow } from "@/lib/utils/guide-import"
+export async function importGuideRow(row:GuideImportRow){const s=getSupabaseBrowserClient();if(!s)return{success:false,message:"Supabase is unavailable."};const{data,error}=await s.rpc("import_guide_row",{p_full_name:row.name,p_phone:row.phone||null,p_birth_date:row.birthDateIso||null,p_city:row.city||null,p_email:row.email||null});if(error)return{success:false,message:"Guide could not be imported."};const result=Array.isArray(data)?data[0]:null;return{success:Boolean(result?.success),message:result?.message??"Guide could not be imported."}}
